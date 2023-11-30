@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    alias(libs.plugins.versions)
+    alias(libs.plugins.version.catalog.update)
+    alias(libs.plugins.jmh.gradle)
+}
+
+sourceCompatibility = JavaVersion.VERSION_11
+
+jacocoTestReport.dependsOn(test)
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+    maxParallelForks = (int) (Runtime.runtime.availableProcessors() / 2)
+}
+
+dependencies {
+    // JUnit bundle (includes vintage engine)
+    testImplementation libs.bundles.junit
+
+    // Mockito bundle (inline and JUnit Jupiter engine)
+    testImplementation libs.bundles.mockito
+
+    // AssertJ
+    testImplementation libs.assertj
+
+    // JMH
+    jmh libs.bundles.jmh
+}
+
+
